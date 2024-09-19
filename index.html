@@ -139,6 +139,7 @@
     <script>
     function fetchUserLinks(type) {
     const input = type === 'username' ? document.getElementById('usernameInput').value.trim() : document.getElementById('referralInput').value.trim();
+
     const errorMessage = document.getElementById('errorMessage');
 
     if (!input) {
@@ -146,7 +147,7 @@
         return;
     }
 
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyakKGGN17dD1gqqBWvN7keSym4EmqBB0AEodFPK4KHmClBoK8eoQSq0NMPAtkXOH9f/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxODgmwA9CEYgT4e8UqOy62-ZtGwi6aPbsVJ3zzUK7dO9Fed_Xa6gVjhVw0KUmSliBs/exec';
 
     const params = new URLSearchParams();
     params.append(type, input);
