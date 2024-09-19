@@ -137,10 +137,12 @@
     </div>
 
     <script>
-      function fetchUserLinks(type) {
+    function fetchUserLinks(type) {
     const input = type === 'username' ? document.getElementById('usernameInput').value.trim() : document.getElementById('referralInput').value.trim();
+    const errorMessage = document.getElementById('errorMessage');
+
     if (!input) {
-        document.getElementById('errorMessage').textContent = `Please enter a valid ${type}`;
+        errorMessage.textContent = `Please enter a valid ${type}`;
         return;
     }
 
@@ -153,15 +155,15 @@
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                document.getElementById('errorMessage').textContent = data.error;
+                errorMessage.textContent = data.error;
                 document.getElementById('linksList').innerHTML = '';
             } else {
-                document.getElementById('errorMessage').textContent = '';
+                errorMessage.textContent = '';
                 displayLinks(data);
             }
         })
         .catch(error => {
-            document.getElementById('errorMessage').textContent = 'Error fetching your links. Please try again later.';
+            errorMessage.textContent = 'Error fetching your links. Please try again later.';
             console.error('Error:', error);
         });
 }
