@@ -137,32 +137,34 @@
     </div>
 
     <script>
-        function fetchUserLinks(type) {
-            const input = type === 'username' ? document.getElementById('usernameInput').value.trim() : document.getElementById('referralInput').value.trim();
-            if (!input) {
-                document.getElementById('errorMessage').textContent = `Please enter a valid ${type}`;
-                return;
+      function fetchUserLinks(type) {
+    const input = type === 'username' ? document.getElementById('usernameInput').value.trim() : document.getElementById('referralInput').value.trim();
+    if (!input) {
+        document.getElementById('errorMessage').textContent = `Please enter a valid ${type}`;
+        return;
+    }
+
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbx_L_XKnjk9wNd-_hUkjHMv1Y_T5_mGFVCfD7SBKrzl1Gl0xeCa2WZJB62KYhisa_ljIg/exec';
+
+    const params = new URLSearchParams();
+    params.append(type, input);
+
+    fetch(`${scriptUrl}?${params.toString()}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('errorMessage').textContent = data.error;
+                document.getElementById('linksList').innerHTML = '';
+            } else {
+                document.getElementById('errorMessage').textContent = '';
+                displayLinks(data);
             }
-
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbz6lVKd9MnWpL06TllJytHzvQd-6sa3Fl45BQjWDcyLC6F3wU4WeSdv5j_tn2eK/exec';
-
-            fetch(`${scriptUrl}?${type}=${encodeURIComponent(input)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        document.getElementById('errorMessage').textContent = data.error;
-                        document.getElementById('linksList').innerHTML = '';
-                    } else {
-                        document.getElementById('errorMessage').textContent = '';
-                        displayLinks(data);
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('errorMessage').textContent = 'Error fetching your links. Please try again later.';
-                    console.error('Error:', error);
-                });
-        }
-
+        })
+        .catch(error => {
+            document.getElementById('errorMessage').textContent = 'Error fetching your links. Please try again later.';
+            console.error('Error:', error);
+        });
+}
         function displayLinks(data) {
             const linksList = document.getElementById('linksList');
             const headers = data[0];
